@@ -79,6 +79,7 @@ pipeline {
                 echo 'Deploy Module2'
                 //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
                 /* sh "java -version" */
+                sh "printenv | grep -i path"
             }
         }
     }
