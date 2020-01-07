@@ -63,6 +63,7 @@ pipeline {
                 sh '''
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo:${BuildTag}
+                    sed -i
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
