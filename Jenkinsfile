@@ -65,7 +65,7 @@ pipeline {
                     imageName = harbor.k8s.maimaiti.site/library/jenkins-demo:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
-                    docker rmi imageName
+                    docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
                 '''
