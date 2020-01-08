@@ -12,6 +12,15 @@ spec:
       containers:
       - name: jenkins-demo
         image: harbor.k8s.maimaiti.site/library/jenkins-demo:<BUILD_TAG>
+        env:
+        - name: JVMSIZE
+          value: -Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom
+        - name: LOGPATH
+          value: -Dlogging.path=/logs/mmd/mall-page/
+        - name: EUREKA
+          value: -DEUREKA_SERVER_ADDRESS=http://eureka-service1.k8s.maimaiti.site/eureka/
+        - name: APOLLO
+          value: -Dapollo.meta=http://devconf.maimaiti.site:8080
         ports:
         - containerPort: 8080
         resources:
