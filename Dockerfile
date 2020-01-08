@@ -3,12 +3,11 @@ VOLUME /tmp
 ADD target/*.jar  /app.jar
 EXPOSE 8080
 ENV JAVA_OPTS="-Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom"
-ENV TZ=Asia/Shanghai
-RUN set -eux; \
-    apk add --no-cache --update tzdata; \
-    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime; \
-    echo $TZ > /etc/timezone; \
-    addgroup --gid 1000 java-app; \
-    adduser -S -u 1000 -g java-app -h /home/java-app/ -s /bin/sh -D java-app;
-USER java-app
+RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories; \
+    apk add tzdata; \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
+    echo Asia/Shanghai > /etc/timezone;
+    # addgroup -g 1000 user01; \
+    # adduser  -u 1000 -G user01 -D user01;
+# USER user01
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app.jar"]
