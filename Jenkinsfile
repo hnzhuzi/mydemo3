@@ -61,6 +61,7 @@ pipeline {
                     sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
                 }
                 sh '''
+                    cd springboot/
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo:${BuildTag}
                     docker build -t $imageName .
