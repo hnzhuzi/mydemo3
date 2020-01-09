@@ -19,7 +19,7 @@ pipeline {
         visibleItemCount: 2,
         multiSelectDelimiter: ',',
         quoteValue: false,
-        value:'module1,module2',
+        value:'springboot,tomcat',
         defaultValue: '',
         saveJSONParameterToFile: false
         )
@@ -51,9 +51,9 @@ pipeline {
                 }
             }
         } */
-        stage('Deploy Module1') {
+        stage('Deploy springboot') {
             when {
-                expression { return "$params.Module".contains('module1')}
+                expression { return "$params.Module".contains('springboot')}
             }
 
             steps {
@@ -72,12 +72,12 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy Module2') {
+        stage('Deploy tomcat') {
             when {
-                expression { return "$params.Module".contains('module2')}
+                expression { return "$params.Module".contains('tomcat')}
             }
             steps {
-                echo 'Deploy Module2'
+                echo 'Deploy tomcat'
                 //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
                 /* sh "java -version" */
             }
