@@ -33,6 +33,9 @@ pipeline {
         stage('Get Code') {
             steps {
                 git branch: "$Branch",  credentialsId: 'gitlab', url: 'http://gitlab.k8s.maimaiti.site/root/jenkins-demo.git'
+                withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
+                }
             }
         }
 /*         stage('Pre Deploy'){
@@ -55,15 +58,11 @@ pipeline {
             when {
                 expression { return "$params.Module".contains('springboot')}
             }
-
             steps {
-                withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
-                }
                 sh '''
                     cd springboot/
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
-                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo:${BuildTag}
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
@@ -77,9 +76,17 @@ pipeline {
                 expression { return "$params.Module".contains('tomcat')}
             }
             steps {
-                echo 'Deploy tomcat'
                 //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
-                /* sh "java -version" */
+                sh '''
+                    cd tomcat/
+                    /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-tomcat:${BuildTag}
+                    docker build -t $imageName .
+                    docker push $imageName
+                    docker rmi $imageName
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
+                    kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
+                '''
             }
         }
     }
