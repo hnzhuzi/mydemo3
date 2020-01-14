@@ -1,26 +1,26 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: jenkins-demo
+  name: jenkins-demo-springboot
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: jenkins-demo
+        app: jenkins-demo-springboot
     spec:
       containers:
-      - name: jenkins-demo
-        image: harbor.k8s.maimaiti.site/library/jenkins-demo:<BUILD_TAG>
+      - name: jenkins-demo-springboot
+        image: harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:<BUILD_TAG>
         env:
         - name: JVMSIZE
           value: -Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom --server.port=8081
-        - name: LOGPATH
-          value: -Dlogging.path=/logs/mmd/mall-page/
-        - name: EUREKA
-          value: -DEUREKA_SERVER_ADDRESS=http://eureka-service1.k8s.maimaiti.site/eureka/
-        - name: APOLLO
-          value: -Dapollo.meta=http://devconf.maimaiti.site:8081
+        # - name: LOGPATH
+        #   value: -Dlogging.path=/logs/mmd/mall-page/
+        # - name: EUREKA
+        #   value: -DEUREKA_SERVER_ADDRESS=http://eureka-service1.k8s.maimaiti.site/eureka/
+        # - name: APOLLO
+        #   value: -Dapollo.meta=http://devconf.maimaiti.site:8081
         ports:
         - containerPort: 8081
         resources:
@@ -32,10 +32,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jenkins-demo
+  name: jenkins-demo-springboot
 spec:
   selector:
-    app: jenkins-demo
+    app: jenkins-demo-springboot
   ports:
     - protocol: TCP
       port: 8081
@@ -46,13 +46,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: jenkins-demo
+  name: jenkins-demo-springboot
 spec:
   rules:
-  - host: jenkins-demo.k8s.maimaiti.site
+  - host: jenkins-demo-springboot.k8s.maimaiti.site
     http:
       paths:
       - path: /
         backend:
-          serviceName: jenkins-demo
+          serviceName: jenkins-demo-springboot
           servicePort: 8081
