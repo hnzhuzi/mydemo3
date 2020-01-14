@@ -1,7 +1,7 @@
 FROM harbor.k8s.maimaiti.site/library/openjdk:8-jre-alpine
 VOLUME /tmp
 ADD target/*.jar  /app.jar
-EXPOSE 8080
+# EXPOSE 8080
 # ENV JAVA_OPTS="-Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom"
 RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories; \
     apk add tzdata; \
