@@ -20,9 +20,9 @@ spec:
         # - name: EUREKA
         #   value: -DEUREKA_SERVER_ADDRESS=http://eureka-service1.k8s.maimaiti.site/eureka/
         # - name: APOLLO
-        #   value: -Dapollo.meta=http://devconf.maimaiti.site:8082
+        #   value: -Dapollo.meta=http://devconf.maimaiti.site:8002
         ports:
-        - containerPort: 8082
+        - containerPort: 8002
         resources:
           requests:
             memory: 512Mi
@@ -38,8 +38,8 @@ spec:
     app: jenkins-demo-tomcat
   ports:
     - protocol: TCP
-      port: 8082
-      targetPort: 8082
+      port: 8002
+      targetPort: 8002
 
 ---
 
@@ -55,4 +55,4 @@ spec:
       - path: /
         backend:
           serviceName: jenkins-demo-tomcat
-          servicePort: 8082
+          servicePort: 8002

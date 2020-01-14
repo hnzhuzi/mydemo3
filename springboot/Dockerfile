@@ -10,4 +10,4 @@ RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories
     # addgroup -g 1000 user01; \
     # adduser  -u 1000 -G user01 -D user01;
 # USER user01
-ENTRYPOINT ["sh", "-c", "java $JVMSIZE -jar /app.jar"]
+ENTRYPOINT ["sh", "-c", "java $JVMSIZE -jar /app.jar --server.port=8001"]
