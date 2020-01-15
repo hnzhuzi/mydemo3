@@ -114,7 +114,7 @@ pipeline {
             steps {
                 dir('test') {
                     sh '''
-                        cd test1
+                        cd test1; cd ../
                         pwd
                     '''
                        
