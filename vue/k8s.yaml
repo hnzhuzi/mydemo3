@@ -1,17 +1,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: jenkins-demo-springboot
+  name: jenkins-demo-vue
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: jenkins-demo-springboot
+        app: jenkins-demo-vue
     spec:
       containers:
-      - name: jenkins-demo-springboot
-        image: harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:<BUILD_TAG>
+      - name: jenkins-demo-vue
+        image: harbor.k8s.maimaiti.site/library/jenkins-demo-vue:<BUILD_TAG>
         env:
         - name: JVMSIZE
           value: -Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom
@@ -32,10 +32,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jenkins-demo-springboot
+  name: jenkins-demo-vue
 spec:
   selector:
-    app: jenkins-demo-springboot
+    app: jenkins-demo-vue
   ports:
     - protocol: TCP
       port: 8003
@@ -46,13 +46,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: jenkins-demo-springboot
+  name: jenkins-demo-vue
 spec:
   rules:
-  - host: jenkins-demo-springboot.k8s.maimaiti.site
+  - host: jenkins-demo-vue.k8s.maimaiti.site
     http:
       paths:
       - path: /
         backend:
-          serviceName: jenkins-demo-springboot
+          serviceName: jenkins-demo-vue
           servicePort: 8003
