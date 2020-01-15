@@ -16,10 +16,10 @@ pipeline {
         name: 'Module',
         description: '模块',
         type: 'PT_CHECKBOX',
-        visibleItemCount: 3,
+        visibleItemCount: 4,
         multiSelectDelimiter: ',',
         quoteValue: false,
-        value:'springboot,tomcat,vue',
+        value:'springboot,tomcat,vue,test',
         defaultValue: '',
         saveJSONParameterToFile: false
         )
