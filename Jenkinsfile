@@ -96,7 +96,8 @@ pipeline {
             steps {
                 sh '''
                     cd vue/
-                    /usr/local/node-v10.16.0-linux-x64/bin/npm --registry=https://registry.npm.taobao.org --cache=/root/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/root/.cnpmrc install; /usr/local/node-v10.16.0-linux-x64/bin/npm run build
+                    /usr/local/node-v10.16.0-linux-x64/bin/npm --registry=https://registry.npm.taobao.org --cache=/root/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/root/.cnpmrc install
+                    /usr/local/node-v10.16.0-linux-x64/bin/npm run build
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
