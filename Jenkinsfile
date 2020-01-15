@@ -16,10 +16,10 @@ pipeline {
         name: 'Module',
         description: '模块',
         type: 'PT_CHECKBOX',
-        visibleItemCount: 2,
+        visibleItemCount: 3,
         multiSelectDelimiter: ',',
         quoteValue: false,
-        value:'springboot,tomcat',
+        value:'springboot,tomcat,vue',
         defaultValue: '',
         saveJSONParameterToFile: false
         )
@@ -81,6 +81,23 @@ pipeline {
                     cd tomcat/
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-tomcat:${BuildTag}
+                    docker build -t $imageName .
+                    docker push $imageName
+                    docker rmi $imageName
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
+                    kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
+                '''
+            }
+        }
+        stage('Deploy vue') {
+            when {
+                expression { return "$params.Module".contains('vue')}
+            }
+            steps {
+                sh '''
+                    cd vue/
+                    /usr/local/node-v10.16.0-linux-x64/bin/npm --registry=https://registry.npm.taobao.org --cache=/root/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/root/.cnpmrc install; /usr/local/node-v10.16.0-linux-x64/bin/npm run build
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
