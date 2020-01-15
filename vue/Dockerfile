@@ -1,7 +1,4 @@
 FROM harbor.k8s.maimaiti.site/library/nginx:alpine
-# VOLUME /tmp
-# EXPOSE 8080
-# ENV JAVA_OPTS="-Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom"
 COPY dist/*.zip  /tmp
 RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories; \
     apk add tzdata; \
@@ -10,6 +7,3 @@ RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories
     sed -i 's#80#8003#g' /etc/nginx/conf.d/default.conf; \
     rm -rf /usr/share/nginx/html/*; \
     unzip /tmp/*.zip -d /usr/share/nginx/html
-    # addgroup -g 1000 user01; \
-    # adduser  -u 1000 -G user01 -D user01;
-# USER user01
