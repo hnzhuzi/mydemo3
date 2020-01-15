@@ -10,6 +10,6 @@ RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories
     rm -rf /usr/local/tomcat/webapps/*
     # addgroup -g 1000 user01; \
     # adduser  -u 1000 -G user01 -D user01;
-ADD target/*.war  /usr/local/tomcat/webapps/app.war
+COPY target/*.war  /usr/local/tomcat/webapps/app.war
 # USER user01
 # ENTRYPOINT ["sh", "-c", "java $JVMSIZE -jar /app.jar"]
