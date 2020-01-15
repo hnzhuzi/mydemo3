@@ -59,6 +59,7 @@ pipeline {
                 expression { return "$params.Module".contains('springboot')}
             }
             steps {
+                //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
                 sh '''
                     cd springboot/
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
@@ -76,7 +77,6 @@ pipeline {
                 expression { return "$params.Module".contains('tomcat')}
             }
             steps {
-                //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
                 sh '''
                     cd tomcat/
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
@@ -114,7 +114,7 @@ pipeline {
             steps {
                 dir('test') {
                     sh '''
-                        cd test1; cd ../
+                        cd test1; cd $WORKSPACE/
                         pwd
                     '''
                        
