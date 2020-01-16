@@ -114,7 +114,7 @@ pipeline {
             steps {
                 dir('test') {
                     sh '''
-                        echo ${InputMap.ENV}
+                        echo ${InputMap['ENV']}
                     '''
                        
                 }
