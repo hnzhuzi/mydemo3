@@ -113,9 +113,10 @@ pipeline {
             }
             steps {
                 dir('test') {
-                    sh '''
-                        echo ${InputMap["ENV"]}
-                    '''
+                    // sh '''
+                    //     echo ${InputMap["ENV"]}
+                    // '''
+                    sh "echo ${InputMap['ENV']}"
                        
                 }
             }
