@@ -38,7 +38,7 @@ pipeline {
                 }
             }
         }
-/*         stage('Pre Deploy'){
+        stage('Pre Deploy'){
             steps{
                 script{
                     InputMap = input (
@@ -53,7 +53,7 @@ pipeline {
                     )
                 }
             }
-        } */
+        } 
         stage('Deploy springboot') {
             when {
                 expression { return "$params.Module".contains('springboot')}
@@ -114,8 +114,7 @@ pipeline {
             steps {
                 dir('test') {
                     sh '''
-                        cd test1; cd $WORKSPACE/
-                        pwd
+                        echo ${InputMap.ENV}
                     '''
                        
                 }
