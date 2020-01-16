@@ -116,7 +116,7 @@ pipeline {
                     // sh '''
                     //     echo ${InputMap["ENV"]}
                     // '''
-                    sh "echo ${InputMap['ENV']}"
+                    sh "echo ${InputMap.ENV}"
                        
                 }
             }
