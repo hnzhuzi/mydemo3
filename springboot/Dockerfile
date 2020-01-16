@@ -1,5 +1,6 @@
 FROM harbor.k8s.maimaiti.site/library/openjdk:8-jre-alpine
 VOLUME /tmp
+# WORKDIR /app
 COPY target/*.jar  /app.jar
 # EXPOSE 8080
 # ENV JAVA_OPTS="-Xms512m -Xmx3g -Djava.security.egd=file:/dev/./urandom"
