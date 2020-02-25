@@ -107,7 +107,7 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy test') {
+        stage('Deploy test1') {
             when {
                 expression { return "$params.Module".contains('test')}
             }
