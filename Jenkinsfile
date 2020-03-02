@@ -69,6 +69,7 @@ pipeline {
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
+                    kubectl rollout status deployment jenkins-demo-springboot
                 '''
             }
         }

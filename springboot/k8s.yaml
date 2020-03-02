@@ -26,6 +26,22 @@ spec:
         resources:
           requests:
             memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8001
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8001
+          initialDelaySeconds: 5
+          periodSeconds: 5          
+          
+          
+        
+        
 
 ---
 
