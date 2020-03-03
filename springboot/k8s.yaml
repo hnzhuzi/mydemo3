@@ -31,13 +31,13 @@ spec:
             path: /
             port: 8001
           initialDelaySeconds: 5
-          periodSeconds: 5
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             port: 8001
           initialDelaySeconds: 5
-          periodSeconds: 5          
+          periodSeconds: 10          
           
           
         
