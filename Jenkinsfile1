@@ -8,17 +8,12 @@ podTemplate(label: label, containers: [
   persistentVolumeClaim(mountPath: '/app', claimName: 'jnlp')
 ]) {
 
-    pipeline {
-        agent { label label }
-        stages {
-            stage('Hello') {
-                steps {
-                    sh '''
-                        echo "begin"
-                        sleep 6000
-                    '''
-                }
-            }
+    node(label) {
+        stage('Run shell') {
+            sh '''
+                echo "begin"
+                sleep 60000
+            '''
         }
     }
 
