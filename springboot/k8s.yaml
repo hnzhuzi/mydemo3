@@ -29,20 +29,16 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 8002
+            port: 8001
           initialDelaySeconds: 5
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
-            port: 8002
+            port: 8001
           initialDelaySeconds: 5
           periodSeconds: 10          
           
-          
-        
-        
-
 ---
 
 apiVersion: v1
@@ -68,7 +64,7 @@ spec:
   - host: jenkins-demo-springboot.k8s.maimaiti.site
     http:
       paths:
-      - path: /
-        backend:
+      - backend:
           serviceName: jenkins-demo-springboot
           servicePort: 8001
+        path: /
