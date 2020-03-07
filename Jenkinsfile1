@@ -1,6 +1,6 @@
 def label = "jnlp-slave-${UUID.randomUUID().toString()}"
 podTemplate(label: label, containers: [
-    containerTemplate(name: 'jnlp', image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1', args: '${computer.jnlpmac} ${computer.name}')
+    containerTemplate(name: 'jnlp', image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-my', args: '${computer.jnlpmac} ${computer.name}')
   ], volumes: [
   hostPathVolume(mountPath: '/root/.m2', hostPath: '/var/run/m2'),
   hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube'),
