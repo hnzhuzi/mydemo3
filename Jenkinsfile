@@ -58,7 +58,7 @@ spec:
         BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
 
-    // stages {
+    stages {
         stage('Get Code') {
             steps {
                 git branch: "$Branch",  credentialsId: 'gitlab', url: 'http://gitlab.k8s.maimaiti.site/root/jenkins-demo.git'
