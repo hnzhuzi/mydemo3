@@ -15,6 +15,18 @@ spec:
   - name: jnlp
     image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-my1'
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+    volumeMounts:
+    - name: "volume-0"
+      mountPath: "/app"
+    - name: "volume-1"
+      mountPath: "/var/run/docker.sock"
+  volumes:
+  - name: "volume-0"
+    persistentVolumeClaim:
+      claimName: "jnlp"
+  - name: "volume-1"
+    hostPath:
+      path: "/var/run/docker.sock"
 """
         }
     }
@@ -46,12 +58,12 @@ spec:
         BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
 
-    stages {
+    // stages {
         stage('Get Code') {
             steps {
                 git branch: "$Branch",  credentialsId: 'gitlab', url: 'http://gitlab.k8s.maimaiti.site/root/jenkins-demo.git'
-                withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
+                // withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                //     sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
                 }
             }
         }
@@ -136,6 +148,7 @@ spec:
                     // '''
                     // sh "echo ${InputMap.ENV}"
                     sh "echo test"
+                    sh 'sleep 600000'
                 }
                 // container('maven') {
                 // sh 'mvn -version'
