@@ -18,16 +18,16 @@ spec:
 """
         }
     }
-    tools {
-        jdk "jdk8"
-    }
-    options {
-        timestamps()
-        disableConcurrentBuilds()
-        timeout(time: 30, unit: 'MINUTES')
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-        /* skipDefaultCheckout(true) */
-    }
+    // tools {
+    //     jdk "jdk8"
+    // }
+    // options {
+    //     timestamps()
+    //     disableConcurrentBuilds()
+    //     timeout(time: 30, unit: 'MINUTES')
+    //     buildDiscarder(logRotator(numToKeepStr: '10'))
+    //     /* skipDefaultCheckout(true) */
+    // }
     parameters {
         extendedChoice(
         name: 'Module',
