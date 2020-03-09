@@ -12,10 +12,9 @@ podTemplate(label: label, containers: [
             sh '''
                 echo "begin"
                 /app/docker info
-                /app/kubectl get pods
                 sleep 60000
             '''
+                // /app/kubectl get pods
         }
     }
-
 }
