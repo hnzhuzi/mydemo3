@@ -11,10 +11,8 @@ podTemplate(label: label, containers: [
         stage('Run shell') {
             sh '''
                 echo "begin"
-                /app/docker info
                 sleep 60000
             '''
-                // /app/kubectl get pods
         }
     }
 }
