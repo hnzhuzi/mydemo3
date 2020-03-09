@@ -13,7 +13,7 @@ metadata:
 spec:
   containers:
   - name: jnlp
-    image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-my1'
+    image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-myv1'
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
     volumeMounts:
     - name: "volume-0"
