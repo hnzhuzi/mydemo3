@@ -3,7 +3,7 @@ pipeline {
     // agent { label 'master' }
     agent {
         kubernetes {
-        label 'jnlp-slave'
+        label 'jnlp'
         yaml """
 apiVersion: v1
 kind: Pod
