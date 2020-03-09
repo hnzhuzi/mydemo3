@@ -11,8 +11,10 @@ podTemplate(label: label, containers: [
         stage('Run shell') {
             sh '''
                 echo "begin"
-                sleep 60000
+                /app/docker info
+                /app/kubectl --kubeconfig=/root/.kube/config get pod
             '''
         }
     }
+    
 }

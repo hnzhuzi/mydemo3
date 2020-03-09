@@ -1,6 +1,23 @@
 pipeline {
-    agent any
+    // agent any
     // agent { label 'master' }
+    agent {
+        kubernetes {
+        label 'mypod'
+        yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    some-label: some-label-value
+spec:
+  containers:
+  - name: jnlp
+    image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-my1'
+    args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+"""
+        }
+    }
     tools {
         jdk "jdk8"
     }
@@ -108,7 +125,7 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy test1') {
+        stage('Deploy test') {
             when {
                 expression { return "$params.Module".contains('test')}
             }
@@ -117,9 +134,12 @@ pipeline {
                     // sh '''
                     //     echo ${InputMap["ENV"]}
                     // '''
-                    sh "echo ${InputMap.ENV}"
-                       
+                    // sh "echo ${InputMap.ENV}"
+                    sh "echo test"
                 }
+                // container('maven') {
+                // sh 'mvn -version'
+                // }
             }
         }
     }
