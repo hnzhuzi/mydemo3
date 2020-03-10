@@ -148,11 +148,11 @@ spec:
                 dir('test') {
                         // echo ${InputMap["ENV"]}
                         // echo ${InputMap.ENV}
-                    sh """
+                    sh '''
                         key1=helloworld
                         echo ${key1}
                         sleep 6000000
-                    """
+                    '''
                 }
 
                 // container('maven') {
