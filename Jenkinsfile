@@ -148,6 +148,7 @@ spec:
                 dir('test') {
                     sh """
                         echo ${InputMap["ENV"]}
+                        sleep 60000000
                         echo ${InputMap.ENV}
                     """
                 }
