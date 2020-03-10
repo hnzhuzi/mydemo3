@@ -132,7 +132,7 @@ spec:
                 sh '''
                     cd vue/
                     alias cnpm="npm --registry=https://registry.npm.taobao.org --cache=/app/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/app/.cnpmrc"
-                    cnpm install; cnpm run build; cd dist; zip -r dist.zip ./; cd ../
+                    cnpm install; cnpm run build; cd dist; tar zcf dist.tar.gz *; cd ../
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
@@ -152,8 +152,6 @@ spec:
                         // echo ${InputMap["ENV"]}
                         // echo ${InputMap.ENV}
                     sh '''
-                        key1=helloworld
-                        echo ${key1}
                         sleep 6000000
                     '''
                 }
