@@ -100,8 +100,8 @@ spec:
                     docker push $imageName
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
-                    kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
-                    kubectl -n kube-system rollout status deployment jenkins-demo-springboot
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
                 """
             }
         }
