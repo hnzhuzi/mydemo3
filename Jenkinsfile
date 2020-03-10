@@ -150,7 +150,7 @@ spec:
                         // echo ${InputMap.ENV}
                     sh """
                         key1=helloworld
-                        echo $key1
+                        echo ${key1}
                         sleep 6000000
                     """
                 }
