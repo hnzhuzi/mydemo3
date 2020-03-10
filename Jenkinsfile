@@ -62,8 +62,8 @@ spec:
         stage('Get Code') {
             steps {
                 git branch: "$Branch",  credentialsId: 'gitlab', url: 'http://gitlab.k8s.maimaiti.site/root/jenkins-demo.git'
-                // withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                //     sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
+                withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
                 }
         }
 
@@ -91,14 +91,14 @@ spec:
                 //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
                 sh '''
                     cd springboot/
-                    /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
+                    mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
-                    kubectl rollout status deployment jenkins-demo-springboot
+                    kubectl -n kube-system rollout status deployment jenkins-demo-springboot
                 '''
             }
         }
