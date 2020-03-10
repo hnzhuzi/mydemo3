@@ -39,9 +39,9 @@ spec:
         disableConcurrentBuilds()
         timeout(time: 30, unit: 'MINUTES')
         buildDiscarder(logRotator(numToKeepStr: '10'))
-        /* skipDefaultCheckout(true) */
+        skipDefaultCheckout(true)
     }
- */
+ */ 
     parameters {
         extendedChoice(
         name: 'Module',
