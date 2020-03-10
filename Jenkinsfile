@@ -95,14 +95,14 @@ spec:
                 sh """
                     cd springboot/
                     mvn -Dmaven.test.skip=true clean package
-                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
-                    docker build -t $imageName .
-                    docker push $imageName
-                    docker rmi $imageName
-                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
                 """
+                    // imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
+                    // docker build -t $imageName .
+                    // docker push $imageName
+                    // docker rmi $imageName
+                    // sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
+                    // kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
+                    // kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
             }
         }
         stage('Deploy tomcat') {
