@@ -5,5 +5,5 @@ RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories
     echo Asia/Shanghai > /etc/timezone; \
     sed -i 's#80#8003#g' /etc/nginx/conf.d/default.conf; \
     rm -rf /usr/share/nginx/html/*;
-ADD dist/*.tar.gz /usr/share/nginx/html
+ADD dist.tar.gz /usr/share/nginx/html
 

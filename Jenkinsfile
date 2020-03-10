@@ -132,7 +132,7 @@ spec:
                 sh '''
                     cd vue/
                     alias cnpm="npm --registry=https://registry.npm.taobao.org --cache=/app/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/app/.cnpmrc"
-                    cnpm install; cnpm run build; cd dist; tar zcf dist.tar.gz *; cd ../
+                    cnpm install; cnpm run build; tar zcf dist.tar.gz -C dist/ .
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
