@@ -30,16 +30,18 @@ spec:
 """
         }
     }
-    // tools {
-    //     jdk "jdk8"
-    // }
-    // options {
-    //     timestamps()
-    //     disableConcurrentBuilds()
-    //     timeout(time: 30, unit: 'MINUTES')
-    //     buildDiscarder(logRotator(numToKeepStr: '10'))
-    //     /* skipDefaultCheckout(true) */
-    // }
+
+/*     tools {
+        jdk "jdk8"
+    }
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        /* skipDefaultCheckout(true) */
+    }
+ */
     parameters {
         extendedChoice(
         name: 'Module',
@@ -68,7 +70,7 @@ spec:
             }
         }
 
-        stage('Pre Deploy'){
+/*         stage('Pre Deploy'){
             steps{
                 script{
                     InputMap = input (
@@ -84,13 +86,13 @@ spec:
                 }
             }
         } 
+ */        
         stage('Deploy springboot') {
             when {
                 expression { return "$params.Module".contains('springboot')}
             }
             steps {
-                //sh "kubectl --kubeconfig=/root/.kube/config -n ${InputMap['ENV']} apply -f k8s.yaml --record"
-                sh '''
+                sh """
                     cd springboot/
                     mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
@@ -100,7 +102,7 @@ spec:
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl -n kube-system rollout status deployment jenkins-demo-springboot
-                '''
+                """
             }
         }
         stage('Deploy tomcat') {
@@ -108,7 +110,7 @@ spec:
                 expression { return "$params.Module".contains('tomcat')}
             }
             steps {
-                sh '''
+                sh """
                     cd tomcat/
                     /usr/local/apache-maven-3.6.1/bin/mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-tomcat:${BuildTag}
@@ -117,7 +119,7 @@ spec:
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
-                '''
+                """
             }
         }
         stage('Deploy vue') {
@@ -125,7 +127,7 @@ spec:
                 expression { return "$params.Module".contains('vue')}
             }
             steps {
-                sh '''
+                sh """
                     source /etc/profile
                     cd vue/
                     cnpm install; cnpm run build; cd dist; zip -r dist.zip ./; cd ../
@@ -135,7 +137,7 @@ spec:
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
-                '''
+                """
             }
         }
         stage('Deploy test') {
@@ -146,13 +148,14 @@ spec:
                 dir('test') {
                     sh """
                         echo ${InputMap["ENV"]}
-                        echo hello
                         echo ${InputMap.ENV}
                     """
                 }
+
                 // container('maven') {
                 // sh 'mvn -version'
                 // }
+                
             }
         }
     }
