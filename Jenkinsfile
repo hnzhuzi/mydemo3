@@ -146,10 +146,11 @@ spec:
             }
             steps {
                 dir('test') {
+                        // echo ${InputMap["ENV"]}
+                        // echo ${InputMap.ENV}
                     sh """
-                        echo ${InputMap["ENV"]}
-                        sleep 60000000
-                        echo ${InputMap.ENV}
+                        echo hello
+                        sleep 6000000
                     """
                 }
 
