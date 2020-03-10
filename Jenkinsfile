@@ -144,14 +144,11 @@ spec:
             }
             steps {
                 dir('test') {
-                    // sh '''
-                    //     echo ${InputMap["ENV"]}
-                    // '''
-                    sh "echo ${InputMap.ENV}"
-                    sh "echo hello"
-                    sh "echo ${InputMap['ENV']}"
-                    // sh "echo test"
-                    // sh 'sleep 600000'
+                    sh '''
+                        echo ${InputMap["ENV"]}
+                        echo hello
+                        echo ${InputMap.ENV}
+                    '''
                 }
                 // container('maven') {
                 // sh 'mvn -version'
