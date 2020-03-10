@@ -149,7 +149,8 @@ spec:
                         // echo ${InputMap["ENV"]}
                         // echo ${InputMap.ENV}
                     sh """
-                        echo hello
+                        key1=helloworld
+                        echo $key1
                         sleep 6000000
                     """
                 }
