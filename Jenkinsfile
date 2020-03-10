@@ -147,7 +147,7 @@ spec:
                     sh '''
                         echo ${InputMap["ENV"]}
                     '''
-                    sh "echo ${InputMap.ENV}"
+                    // sh "echo ${InputMap.ENV}"
                     // sh "echo test"
                     // sh 'sleep 600000'
                 }
