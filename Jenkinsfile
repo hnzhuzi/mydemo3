@@ -128,16 +128,18 @@ spec:
                 expression { return "$params.Module".contains('vue')}
             }
             steps {
+                    // source /etc/profile
                 sh '''
-                    source /etc/profile
                     cd vue/
+                    alias cnpm="npm --registry=https://registry.npm.taobao.org --cache=/app/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/app/.cnpmrc
                     cnpm install; cnpm run build; cd dist; zip -r dist.zip ./; cd ../
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
-                    kubectl --kubeconfig=/root/.kube/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-vue
                 '''
             }
         }
