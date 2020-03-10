@@ -67,22 +67,22 @@ spec:
                 }
         }
 
-        // stage('Pre Deploy'){
-        //     steps{
-        //         script{
-        //             InputMap = input (
-        //                 message: '准备发布到哪个环境？',
-        //                 ok: '确定',
-        //                 parameters:[
-        //                     choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
-        //                     string(name: 'myparam', defaultValue: '', description: '')
-        //                 ],
-        //                 submitter: 'admin',
-        //                 submitterParameter: 'APPROVER'
-        //             )
-        //         }
-        //     }
-        // } 
+        stage('Pre Deploy'){
+            steps{
+                script{
+                    InputMap = input (
+                        message: '准备发布到哪个环境？',
+                        ok: '确定',
+                        parameters:[
+                            choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
+                            string(name: 'myparam', defaultValue: '', description: '')
+                        ],
+                        submitter: 'admin',
+                        submitterParameter: 'APPROVER'
+                    )
+                }
+            }
+        } 
         stage('Deploy springboot') {
             when {
                 expression { return "$params.Module".contains('springboot')}
@@ -143,12 +143,12 @@ spec:
             }
             steps {
                 dir('test') {
-                    // sh '''
-                    //     echo ${InputMap["ENV"]}
-                    // '''
-                    // sh "echo ${InputMap.ENV}"
-                    sh "echo test"
-                    sh 'sleep 600000'
+                    sh '''
+                        echo ${InputMap["ENV"]}
+                    '''
+                    sh "echo ${InputMap.ENV}"
+                    // sh "echo test"
+                    // sh 'sleep 600000'
                 }
                 // container('maven') {
                 // sh 'mvn -version'
