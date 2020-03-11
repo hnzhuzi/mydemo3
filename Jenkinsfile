@@ -76,7 +76,7 @@ spec:
         stage('Pre Deploy'){
             steps{
                 script{
-                    Inputmap = input (
+                    InputMap = input (
                         message: '准备发布到哪个环境？',
                         ok: '确定',
                         parameters:[
@@ -152,10 +152,10 @@ spec:
             }
             steps {
                 dir('test') {
-                    // echo ${Inputmap["ENV"]}
+                    // echo ${InputMap["ENV"]}
                         // echo ${BuildTag}
                     sh '''
-                        echo ${Inputmap.ENV}
+                        echo ${InputMap.ENV}
                     '''
                 }
 
