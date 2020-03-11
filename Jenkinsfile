@@ -56,9 +56,9 @@ spec:
         )
         string(name: 'Branch', description: '分支', defaultValue: 'master')
     }
-    // environment {
-    //     build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-    // }
+    environment {
+        build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    }
 
     stages {
         stage('Get Code') {
@@ -67,9 +67,9 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                     sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
                 }
-                script {
-                    build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                }
+                // script {
+                //     build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                // }
             }
         }
 
