@@ -57,7 +57,7 @@ spec:
         string(name: 'Branch', description: '分支', defaultValue: 'master')
     }
     environment {
-        build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
 
     stages {
@@ -68,27 +68,27 @@ spec:
                     sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
                 }
                 // script {
-                //     build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                //     BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
                 // }
             }
         }
 
-        stage('Pre Deploy'){
-            steps{
-                script{
-                    InputMap = input (
-                        message: '准备发布到哪个环境？',
-                        ok: '确定',
-                        parameters:[
-                            choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
-                            string(name: 'myparam', defaultValue: '', description: '')
-                        ],
-                        submitter: 'admin',
-                        submitterParameter: 'APPROVER'
-                    )
-                }
-            }
-        } 
+        // stage('Pre Deploy'){
+        //     steps{
+        //         script{
+        //             InputMap = input (
+        //                 message: '准备发布到哪个环境？',
+        //                 ok: '确定',
+        //                 parameters:[
+        //                     choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
+        //                     string(name: 'myparam', defaultValue: '', description: '')
+        //                 ],
+        //                 submitter: 'admin',
+        //                 submitterParameter: 'APPROVER'
+        //             )
+        //         }
+        //     }
+        // } 
       
         stage('Deploy springboot') {
             when {
@@ -98,11 +98,11 @@ spec:
                 sh '''
                     cd springboot/
                     mvn -Dmaven.test.skip=true clean package
-                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${build_tag}
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
-                    sed -i "s/<BUILD_TAG>/${build_tag}/" k8s.yaml
+                    sed -i "s/<BuildTag>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
                 '''
@@ -116,11 +116,11 @@ spec:
                 sh '''
                     cd tomcat/
                     mvn -Dmaven.test.skip=true clean package
-                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-tomcat:${build_tag}
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-tomcat:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
-                    sed -i "s/<BUILD_TAG>/${build_tag}/" k8s.yaml
+                    sed -i "s/<BuildTag>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-tomcat
                 '''
@@ -136,11 +136,11 @@ spec:
                     cd vue/
                     alias cnpm="npm --registry=https://registry.npm.taobao.org --cache=/app/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/app/.cnpmrc"
                     cnpm install; cnpm run build; tar zcf dist.tar.gz -C dist/ .
-                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${build_tag}
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-vue:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
-                    sed -i "s/<BUILD_TAG>/${build_tag}/" k8s.yaml
+                    sed -i "s/<BuildTag>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-vue
                 '''
@@ -153,7 +153,7 @@ spec:
             steps {
                 dir('test') {
                     // echo ${InputMap["ENV"]}
-                        // echo ${build_tag}
+                        // echo ${BuildTag}
                     sh '''
                         echo ${InputMap.ENV}
                     '''
