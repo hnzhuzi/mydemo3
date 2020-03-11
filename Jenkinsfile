@@ -154,9 +154,9 @@ spec:
                 dir('test') {
                     // echo ${InputMap["ENV"]}
                         // echo ${InputMap.ENV}
-                    sh """
+                    sh '''
                         echo ${BuildTag}
-                    """
+                    '''
                 }
 
                 // container('maven') {
