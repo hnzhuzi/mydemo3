@@ -153,8 +153,8 @@ spec:
             steps {
                 dir('test') {
                     // echo ${InputMap["ENV"]}
-                    sh '''
                         // echo ${BuildTag}
+                    sh '''
                         echo ${InputMap.ENV}
                     '''
                 }
