@@ -73,7 +73,7 @@ spec:
             }
         }
 
-/*         stage('Pre Deploy'){
+        stage('Pre Deploy'){
             steps{
                 script{
                     InputMap = input (
@@ -89,7 +89,7 @@ spec:
                 }
             }
         } 
- */        
+      
         stage('Deploy springboot') {
             when {
                 expression { return "$params.Module".contains('springboot')}
@@ -153,8 +153,8 @@ spec:
             steps {
                 dir('test') {
                         // echo ${InputMap["ENV"]}
-                        // echo ${InputMap.ENV}
                     sh '''
+                        echo ${InputMap.ENV}
                         echo ${build_tag}
                     '''
                 }
