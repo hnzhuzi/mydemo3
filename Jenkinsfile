@@ -57,7 +57,7 @@ spec:
         string(name: 'Branch', description: '分支', defaultValue: 'master')
     }
     environment {
-        BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        buildtag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
 
     stages {
@@ -153,9 +153,9 @@ spec:
             steps {
                 dir('test') {
                     // echo ${InputMap["ENV"]}
-                        // echo ${BuildTag}
+                        // echo ${InputMap.ENV}
                     sh '''
-                        echo ${InputMap.ENV}
+                        echo ${buildtag}
                     '''
                 }
 
