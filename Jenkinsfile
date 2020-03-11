@@ -102,7 +102,7 @@ spec:
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
-                    sed -i "s/<BuildTag>/${BuildTag}/" k8s.yaml
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
                 '''
@@ -140,7 +140,7 @@ spec:
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
-                    sed -i "s/<BuildTag>/${BuildTag}/" k8s.yaml
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-vue
                 '''
