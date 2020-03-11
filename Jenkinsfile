@@ -56,9 +56,9 @@ spec:
         )
         string(name: 'Branch', description: '分支', defaultValue: 'master')
     }
-    // environment {
-    //     BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-    // }
+    environment {
+        BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    }
 
     stages {
         stage('Get Code') {
@@ -73,22 +73,22 @@ spec:
             }
         }
 
-        stage('Pre Deploy'){
-            steps{
-                script{
-                    InputMap = input (
-                        message: '准备发布到哪个环境？',
-                        ok: '确定',
-                        parameters:[
-                            choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
-                            string(name: 'myparam', defaultValue: '', description: '')
-                        ],
-                        submitter: 'admin',
-                        submitterParameter: 'APPROVER'
-                    )
-                }
-            }
-        } 
+        // stage('Pre Deploy'){
+        //     steps{
+        //         script{
+        //             InputMap = input (
+        //                 message: '准备发布到哪个环境？',
+        //                 ok: '确定',
+        //                 parameters:[
+        //                     choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
+        //                     string(name: 'myparam', defaultValue: '', description: '')
+        //                 ],
+        //                 submitter: 'admin',
+        //                 submitterParameter: 'APPROVER'
+        //             )
+        //         }
+        //     }
+        // } 
       
         stage('Deploy springboot') {
             when {
