@@ -73,22 +73,22 @@ spec:
             }
         }
 
-        // stage('Pre Deploy'){
-        //     steps{
-        //         script{
-        //             InputMap = input (
-        //                 message: '准备发布到哪个环境？',
-        //                 ok: '确定',
-        //                 parameters:[
-        //                     choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
-        //                     string(name: 'myparam', defaultValue: '', description: '')
-        //                 ],
-        //                 submitter: 'admin',
-        //                 submitterParameter: 'APPROVER'
-        //             )
-        //         }
-        //     }
-        // } 
+        stage('Pre Deploy'){
+            steps{
+                script{
+                    InputMap = input (
+                        message: '准备发布到哪个环境？',
+                        ok: '确定',
+                        parameters:[
+                            choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
+                            string(name: 'myparam', defaultValue: '', description: '')
+                        ],
+                        submitter: 'admin',
+                        submitterParameter: 'APPROVER'
+                    )
+                }
+            }
+        } 
       
         stage('Deploy springboot') {
             when {
@@ -120,7 +120,7 @@ spec:
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
-                    sed -i "s/<BuildTag>/${BuildTag}/" k8s.yaml
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-tomcat
                 '''
