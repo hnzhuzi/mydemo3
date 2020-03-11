@@ -155,7 +155,7 @@ spec:
                         // echo ${InputMap["ENV"]}
                         // echo ${InputMap.ENV}
                     sh '''
-                        sleep 6000000
+                        echo ${build_tag}
                     '''
                 }
 
