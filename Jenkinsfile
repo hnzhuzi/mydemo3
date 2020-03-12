@@ -155,10 +155,10 @@ spec:
                     /*
                         echo ${InputMap["ENV"]}
                         echo ${InputMap.ENV}
-                        printenv | grep -E 'BuildTag|PATH'
                     */
                     sh '''
                         echo ${BuildTag}
+                        printenv | grep -E 'BuildTag|PATH'
                     '''
                 }
 
