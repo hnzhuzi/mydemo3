@@ -43,10 +43,10 @@ spec:
         skipDefaultCheckout(true)
     }
 */    
-    environment {
-        PATH=/app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH
-        BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-    }
+    // environment {
+    //     PATH=/app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH
+    //     BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    // }
     parameters {
         extendedChoice(
         name: 'Module',
@@ -69,35 +69,32 @@ spec:
                 withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                     sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.k8s.maimaiti.site"
                 }
-                // script {
-                //     BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                // }
+                script {
+                    env.BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                }
             }
         }
 
-        // stage('Pre Deploy'){
-        //     steps{
-        //         script{
-        //             InputMap = input (
-        //                 message: '准备发布到哪个环境？',
-        //                 ok: '确定',
-        //                 parameters:[
-        //                     choice(name: 'ENV', choices: 'dev\nsit\nuat\nprd\ndefault', description: '发布到什么环境？'),
-        //                     string(name: 'myparam', defaultValue: '', description: '')
-        //                 ],
-        //                 submitter: 'admin',
-        //                 submitterParameter: 'APPROVER'
-        //             )
-        //         }
-        //     }
-        // } 
+        stage('Pre Deploy'){
+            steps{
+                script{
+                    env.InputMap = input (
+                        message: '准备发布到哪个环境？',
+                        parameters:[
+                            choice(name: 'ENV', choices: ['dev', 'sit','uat','prd','default'], description: '选择发布到什么环境？'),
+                            string(name: 'myparam', defaultValue: '', description: '')
+                        ]
+                    )
+                }
+            }
+        } 
       
         stage('Deploy springboot') {
             when {
                 expression { return "$params.Module".contains('springboot')}
             }
             steps {
-                sh """
+                sh '''
                     cd springboot/
                     mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:${BuildTag}
@@ -107,7 +104,7 @@ spec:
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
-                """
+                '''
             }
         }
         stage('Deploy tomcat') {
@@ -115,7 +112,7 @@ spec:
                 expression { return "$params.Module".contains('tomcat')}
             }
             steps {
-                sh """
+                sh '''
                     cd tomcat/
                     mvn -Dmaven.test.skip=true clean package
                     imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-tomcat:${BuildTag}
@@ -125,7 +122,7 @@ spec:
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-tomcat
-                """
+                '''
             }
         }
         stage('Deploy vue') {
@@ -134,7 +131,7 @@ spec:
             }
             steps {
                     // source /etc/profile
-                sh """
+                sh '''
                     cd vue/
                     alias cnpm="npm --registry=https://registry.npm.taobao.org --cache=/app/.npm/.cache/cnpm --disturl=https://npm.taobao.org/dist --userconfig=/app/.cnpmrc"
                     cnpm install; cnpm run build; tar zcf dist.tar.gz -C dist/ .
@@ -145,7 +142,7 @@ spec:
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
                     kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
                     kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-vue
-                """
+                '''
             }
         }
         stage('Deploy test') {
@@ -155,13 +152,13 @@ spec:
             steps {
                 dir('test') {
                     /*
-                    echo ${InputMap["ENV"]}
-                    echo ${InputMap.ENV}
-                    echo ${BuildTag}
-                    */
-                    sh """
+                        echo ${InputMap["ENV"]}
+                        echo ${InputMap.ENV}
                         printenv | grep -E 'BuildTag|PATH'
-                    """
+                    */
+                    sh '''
+                        echo ${BuildTag}
+                    '''
                 }
 
                 // container('maven') {
