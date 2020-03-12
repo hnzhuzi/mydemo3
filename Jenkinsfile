@@ -76,19 +76,19 @@ spec:
             }
         }
 
-        stage('Pre Deploy'){
-            steps{
-                script{
-                    env.InputMap = input (
-                        message: '准备发布到哪个环境？',
-                        parameters:[
-                            choice(name: 'ENV', choices: ['dev', 'sit','uat','prd','default'], description: '选择发布到什么环境？'),
-                            string(name: 'myparam', defaultValue: '', description: '')
-                        ]
-                    )
-                }
-            }
-        } 
+        // stage('Pre Deploy'){
+        //     steps{
+        //         script{
+        //             env.InputMap = input (
+        //                 message: '准备发布到哪个环境？',
+        //                 parameters:[
+        //                     choice(name: 'ENV', choices: ['dev', 'sit','uat','prd','default'], description: '选择发布到什么环境？'),
+        //                     string(name: 'myparam', defaultValue: '', description: '')
+        //                 ]
+        //             )
+        //         }
+        //     }
+        // } 
       
         stage('Deploy springboot') {
             when {
