@@ -43,10 +43,10 @@ spec:
         skipDefaultCheckout(true)
     }
 */    
-    // environment {
-    //     PATH=/app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH
-    //     BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-    // }
+    environment {
+        PATH = /app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH
+        // BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    }
     parameters {
         extendedChoice(
         name: 'Module',
