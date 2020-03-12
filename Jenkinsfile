@@ -1,6 +1,4 @@
 pipeline {
-    // agent any
-    // agent { label 'master' }
     agent {
         kubernetes {
         label 'jnlp'
@@ -13,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: jnlp
-    image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-myv3'
+    image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-myv4'
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
     volumeMounts:
     - name: "volume-0"
@@ -32,6 +30,8 @@ spec:
     }
 
 /*    
+    agent any
+    agent { label 'master' }
     tools {
         jdk "jdk8"
     }
@@ -44,6 +44,7 @@ spec:
     }
 */    
     environment {
+        PATH=/app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH
         BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
     parameters {
@@ -159,7 +160,7 @@ spec:
                     echo ${BuildTag}
                     */
                     sh """
-                        printenv | grep BuildTag
+                        printenv | grep -E 'BuildTag|PATH'
                     """
                 }
 
