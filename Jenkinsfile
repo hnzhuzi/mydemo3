@@ -13,6 +13,10 @@ spec:
   - name: jnlp
     image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-myv4'
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
+    resources:                                                                                                                    
+        requests:                                                                                                                   
+            cpu: 50m                                                                                                                 
+            memory: 1000Mi
     volumeMounts:
     - name: "volume-0"
       mountPath: "/app"
