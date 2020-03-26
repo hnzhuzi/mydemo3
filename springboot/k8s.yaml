@@ -13,10 +13,10 @@ spec:
       - name: jenkins-demo-springboot
         image: harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:<BUILD_TAG>
         command: [ "sh", "-c", "java $(JVMSIZE) -Dserver.port=8001 -jar /app/app.jar"]
-        # command: [ "sh", "-c", "java $(JVMSIZE) -jar /app/app.jar --server.port=8001"]
+        # command: [ "sh", "-c", "java $(JVMSIZE) -jar /app/app.jar" --server.port=8001]
         env:
-    JVMSIZE
-          -- value: -Xms3g -Xmx3g -Djava.security.egd=file:/dev/./urandom
+        - name: JVMSIZE
+          value: -Xms3g -Xmx3g -Djava.security.egd=file:/dev/./urandom
         # - name: LOGPATH
         #   value: -Dlogging.path=/logs/mmd/mall-page/
         # - name: EUREKA
