@@ -15,8 +15,7 @@ else
     echo "the replicas of the eureka pod is $EUREKA_REPLICAS"
     BOOL_REGISTER="true"
     BOOL_FETCH="true"
-    for ((i=0 ;i<$EUREKA_REPLICAS; i ++))
-    do
+    for ((i = 0; i < $EUREKA_REPLICAS; i++)); do
         temp="http://$EUREKA_APPLICATION_NAME-$i.$MY_IN_SERVICE_NAME.$MY_POD_NAMESPACE.$postFix:8761/eureka/,"
         EUREKA_URL_LIST="$EUREKA_URL_LIST$temp"
         echo $EUREKA_URL_LIST

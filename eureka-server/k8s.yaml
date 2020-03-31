@@ -4,7 +4,7 @@ metadata:
   name: eureka-service-internal
   labels:
     app: eureka-service-internal
-  namespace: default
+  namespace: kube-system
 spec:
   clusterIP: None
   ports:
@@ -50,13 +50,13 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        - name: MY_IN_SERVICE_NAME # 因为pod 通过域名互相访问，需要使用headless 服务名称
+        - name: MY_IN_SERVICE_NAME # 因为pod 通过域名互相访问，需要使用headless服务名称
           value: eureka-service-internal
         - name: EUREKA_APPLICATION_NAME
           value: "eureka"
         - name: EUREKA_REPLICAS
           value: "3"
-        image:  helloHuawei/eureka:v2 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
+        image:  harbor.k8s.maimaiti.site/library/eureka-server:v1 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
         imagePullPolicy: IfNotPresent
         name: eureka-container
         ports:

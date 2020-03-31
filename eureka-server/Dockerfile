@@ -1,9 +1,9 @@
-FROM java:8
+FROM harbor.k8s.maimaiti.site/library/openjdk:8-jre-alpine
 #设置端口
 EXPOSE 8761
 ADD init.sh /init.sh
-ADD eureka.jar /eureka.jar
+ADD target/*.jar /eureka.jar
 #reset shell
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-ENTRYPOINT ["/bin/bash","-c","source /init.sh"]
+# RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+ENTRYPOINT ["/bin/sh","-c","source /init.sh"]
 
