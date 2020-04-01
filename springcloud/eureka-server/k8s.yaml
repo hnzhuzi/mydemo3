@@ -56,7 +56,7 @@ spec:
           value: "eureka"
         - name: EUREKA_REPLICAS
           value: "3"
-        image:  harbor.k8s.maimaiti.site/library/eureka-server:v2 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
+        image:  harbor.k8s.maimaiti.site/library/eureka-server:v3 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
         imagePullPolicy: IfNotPresent
         name: eureka-container
         ports:
