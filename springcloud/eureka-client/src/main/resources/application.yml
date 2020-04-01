@@ -8,5 +8,5 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka.k8s.maimaiti.site/eureka/
+      defaultZone: http://eureka:8761/eureka/
 #      defaultZone: http://localhost:8001/eureka/
