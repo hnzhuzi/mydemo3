@@ -56,9 +56,39 @@ spec:
           value: "eureka"
         - name: EUREKA_REPLICAS
           value: "3"
-        image:  harbor.k8s.maimaiti.site/library/eureka-server:v1 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
+        image:  harbor.k8s.maimaiti.site/library/eureka-server:v2 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
         imagePullPolicy: IfNotPresent
         name: eureka-container
         ports:
         - containerPort: 8761
           protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka
+spec:
+  selector:
+    app: eureka
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eureka
+spec:
+  rules:
+  - host: eureka.k8s.maimaiti.site
+    http:
+      paths:
+      - backend:
+          serviceName: eureka
+          servicePort: 8761
+        path: /
