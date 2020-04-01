@@ -1,0 +1,71 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: eureka-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eureka-client
+    spec:
+      containers:
+      - name: eureka-client
+        image: harbor.k8s.maimaiti.site/library/eureka-client:v1
+        command: [ "sh", "-c", "java -jar /app/app.jar"]
+        env:
+        - name: JVMSIZE
+          value: -Xms3g -Xmx3g -Djava.security.egd=file:/dev/./urandom
+        # - name: LOGPATH
+        #   value: -Dlogging.path=/logs/mmd/mall-page/
+        # - name: EUREKA
+        #   value: -DEUREKA_SERVER_ADDRESS=http://eureka-service1.k8s.maimaiti.site/eureka/
+        # - name: APOLLO
+        #   value: -Dapollo.meta=http://devconf.maimaiti.site:8101
+        ports:
+        - containerPort: 8101
+        # resources:
+        #   requests:
+        #     memory: 512Mi
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 8101
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 8101
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10          
+          
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-client
+spec:
+  selector:
+    app: eureka-client
+  ports:
+    - protocol: TCP
+      port: 8101
+      targetPort: 8101
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eureka-client
+spec:
+  rules:
+  - host: eureka-client.k8s.maimaiti.site
+    http:
+      paths:
+      - backend:
+          serviceName: eureka-client
+          servicePort: 8101
+        path: /
