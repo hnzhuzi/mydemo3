@@ -13,9 +13,9 @@ spec:
   - name: jnlp
     image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-myv4'
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
-    resources:                                                                                                                    
-        requests:                                                                                                                   
-            cpu: 50m                                                                                                                 
+    resources:
+        requests:
+            cpu: 50m
             memory: 1000Mi
     volumeMounts:
     - name: "volume-0"
@@ -33,7 +33,7 @@ spec:
         }
     }
 
-/*    
+/*
     agent any
     agent { label 'master' }
     tools {
@@ -46,7 +46,7 @@ spec:
         buildDiscarder(logRotator(numToKeepStr: '10'))
         skipDefaultCheckout(true)
     }
-*/    
+*/
     environment {
         PATH = "/app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH"
         // BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -92,8 +92,8 @@ spec:
         //             )
         //         }
         //     }
-        // } 
-      
+        // }
+
         stage('Deploy springboot') {
             when {
                 expression { return "$params.Module".contains('springboot')}
@@ -150,7 +150,7 @@ spec:
                 '''
             }
         }
-        stage('Deploy test') {
+        stage('Deploy test v2') {
             when {
                 expression { return "$params.Module".contains('test')}
             }
@@ -170,7 +170,7 @@ spec:
                 // container('maven') {
                 // sh 'mvn -version'
                 // }
-                
+
             }
         }
     }
