@@ -150,7 +150,7 @@ spec:
                 '''
             }
         }
-        stage('Deploy test local v3') {
+        stage('Deploy test local') {
             when {
                 expression { return "$params.Module".contains('test')}
             }
