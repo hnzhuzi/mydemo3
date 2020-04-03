@@ -150,7 +150,7 @@ spec:
                 '''
             }
         }
-        stage('Deploy test v2') {
+        stage('Deploy test dev-v2') {
             when {
                 expression { return "$params.Module".contains('test')}
             }
