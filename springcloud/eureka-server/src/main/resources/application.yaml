@@ -1,11 +1,9 @@
 server:
   port: 8761
-eureka:
-  instance:
-    hostname: ${MY_POD_NAME}.eureka-service-internal.kube-system.svc.cluster.local #服务主机名
-  client:
-    service-url:
-      defaultZone: http://eureka-0.eureka-service-internal.kube-system.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.kube-system.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.kube-system.svc.cluster.local:8761/eureka/ # 指定服务中心 eureka server的地址
 spring:
   application:
     name: eureka
+  profiles:
+    active: ${ENVIRONMENT:dev}
+eureka:
+  environment: ${ENVIRONMENT:dev}

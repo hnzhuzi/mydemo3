@@ -1,29 +1,32 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eureka
+data:
+  eureka_server_address: http://eureka-0.eureka-service-internal.kube-system.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.kube-system.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.kube-system.svc.cluster.local:8761/eureka/
+
+---
+
+apiVersion: v1
 kind: Service
 metadata:
   name: eureka-service-internal
-  labels:
-    app: eureka-service-internal
-  namespace: kube-system
 spec:
   clusterIP: None
-  ports:
-  - port: 8761
-    protocol: TCP
-    targetPort: 8761
   selector:
     app: eureka
-  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
 
 ---
+
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: eureka
 spec:
-  selector:
-    matchLabels:
-      app: eureka
   serviceName: "eureka-service-internal"
   replicas: 3
   template:
@@ -31,37 +34,48 @@ spec:
       labels:
         app: eureka
     spec:
-      terminationGracePeriodSeconds: 10
       containers:
-      - env:
-        - name: MY_NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
+      - name: eureka
+        image:  harbor.k8s.maimaiti.site/library/eureka-server:v3
+        ports:
+        - containerPort: 8761
+        resources:
+          limits:
+            cpu: 50m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 500Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8761
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8761
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        env:
         - name: MY_POD_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        - name: MY_POD_NAMESPACE # 传入当前命名空间
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: MY_POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: MY_IN_SERVICE_NAME # 因为pod 通过域名互相访问，需要使用headless服务名称
-          value: eureka-service-internal
-        - name: EUREKA_APPLICATION_NAME
-          value: "eureka"
         - name: EUREKA_REPLICAS
           value: "3"
-        image:  harbor.k8s.maimaiti.site/library/eureka-server:v3 # 这个镜像是修改后的。如何打包这个镜像，在后面会介绍
-        imagePullPolicy: IfNotPresent
-        name: eureka-container
-        ports:
-        - containerPort: 8761
-          protocol: TCP
+        - name: EUREKA_SERVER_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: eureka
+              key: eureka_server_address
+        - name: ENVIRONMENT
+          value: "prod"
+        - name: JVM_OPTS
+          value: "-Xms512m -Xmx512m"
 
 ---
 
