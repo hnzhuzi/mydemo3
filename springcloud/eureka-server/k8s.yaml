@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: eureka
-        image:  harbor.k8s.maimaiti.site/library/eureka-server:v3
+        image:  harbor.k8s.maimaiti.site/library/eureka-server:v4
         ports:
         - containerPort: 8761
         resources:
