@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: eureka-client
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -11,32 +11,32 @@ spec:
     spec:
       containers:
       - name: eureka-client
-        image: harbor.k8s.maimaiti.site/library/eureka-client:v2
-        command: [ "sh", "-c", "java -jar /app/app.jar"]
-        env:
-        - name: JVMSIZE
-          value: -Xms3g -Xmx3g -Djava.security.egd=file:/dev/./urandom
-        # - name: LOGPATH
-        #   value: -Dlogging.path=/logs/mmd/mall-page/
-        # - name: EUREKA
-        #   value: -DEUREKA_SERVER_ADDRESS=http://eureka-service1.k8s.maimaiti.site/eureka/
-        # - name: APOLLO
-        #   value: -Dapollo.meta=http://devconf.maimaiti.site:8101
+        image: harbor.k8s.maimaiti.site/library/eureka-client:v3
         ports:
         - containerPort: 8101
-        # resources:
-        #   requests:
-        #     memory: 512Mi
-        # livenessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: 8101
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 10
-        # readinessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: 8101
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 10          
+        resources:
+          requests:
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8101
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8101
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        env:
+        - name: EUREKA_SERVER_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: eureka
+              key: eureka_server_address
+        - name: JVM_OPTS
+          value: "-Xms512m -Xmx512m"       
       

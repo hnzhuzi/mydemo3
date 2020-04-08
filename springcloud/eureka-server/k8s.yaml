@@ -40,12 +40,8 @@ spec:
         ports:
         - containerPort: 8761
         resources:
-          limits:
-            cpu: 50m
-            memory: 500Mi
           requests:
-            cpu: 50m
-            memory: 500Mi
+            memory: 512Mi
         livenessProbe:
           httpGet:
             path: /
