@@ -56,10 +56,10 @@ spec:
         name: 'Module',
         description: '模块',
         type: 'PT_CHECKBOX',
-        visibleItemCount: 4,
+        visibleItemCount: 10,
         multiSelectDelimiter: ',',
         quoteValue: false,
-        value:'springboot,tomcat,vue,test',
+        value:'springboot,springcloud-eureka-server,springcloud-eureka-client,tomcat,vue,test',
         defaultValue: '',
         saveJSONParameterToFile: false
         )
@@ -112,6 +112,44 @@ spec:
                 '''
             }
         }
+        stage('Deploy springcloud-eureka-server') {
+            when {
+                expression { return "$params.Module".contains('springcloud-eureka-server')}
+            }
+            steps {
+                sh '''
+                    cd springcloud/eureka-server/
+                    mvn -Dmaven.test.skip=true clean package
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springcloud-eureka-server:${BuildTag}
+                    docker build -t $imageName .
+                    docker push $imageName
+                    docker rmi $imageName
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status statefulset eureka
+                '''
+            }
+        }
+        stage('Deploy springcloud-eureka-client') {
+            when {
+                expression { return "$params.Module".contains('springcloud-eureka-client')}
+            }
+            steps {
+                sh '''
+                    cd springcloud/eureka-client/
+                    mvn -Dmaven.test.skip=true clean package
+                    imageName=harbor.k8s.maimaiti.site/library/jenkins-demo-springcloud-eureka-client:${BuildTag}
+                    docker build -t $imageName .
+                    docker push $imageName
+                    docker rmi $imageName
+                    sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment eureka-client
+                '''
+            }
+        }
+
+
         stage('Deploy tomcat') {
             when {
                 expression { return "$params.Module".contains('tomcat')}
@@ -160,10 +198,10 @@ spec:
                     /*
                         echo ${InputMap["ENV"]}
                         echo ${InputMap.ENV}
-                        printenv | grep -E 'BuildTag|PATH'
+                        sleep 600000
                     */
                     sh '''
-                        sleep 600000
+                        printenv | grep -E 'BuildTag|PATH'
                     '''
                 }
 
