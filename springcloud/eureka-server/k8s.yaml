@@ -85,8 +85,6 @@ spec:
           value: "prod"
         - name: JVM_OPTS
           value: "-Xms512m -Xmx512m"
-  updateStrategy:                                                                                                             
-    type: RollingUpdate
 
 ---
 
