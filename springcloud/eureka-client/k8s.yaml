@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: eureka-client
-        image: harbor.k8s.maimaiti.site/library/eureka-client:v4
+        image: harbor.k8s.maimaiti.site/library/jenkins-demo-springcloud-eureka-client:<BUILD_TAG>
         ports:
         - containerPort: 8101
         resources:
