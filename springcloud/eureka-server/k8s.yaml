@@ -22,14 +22,14 @@ spec:
 
 ---
 
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: eureka
 spec:
-  serviceName: eureka-service-internal
+  podManagementPolicy: Parallel
   replicas: 3
-  # podManagementPolicy: Parallel
+  serviceName: eureka-service-internal
   template:
     metadata:
       labels:
@@ -85,6 +85,8 @@ spec:
           value: "prod"
         - name: JVM_OPTS
           value: "-Xms512m -Xmx512m"
+  updateStrategy:                                                                                                             
+    type: RollingUpdate
 
 ---
 
