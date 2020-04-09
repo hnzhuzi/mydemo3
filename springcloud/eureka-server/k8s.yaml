@@ -29,6 +29,9 @@ metadata:
 spec:
   podManagementPolicy: Parallel
   replicas: 3
+  selector:                                                                                                                   
+    matchLabels:                                                                                                              
+      app: eureka
   serviceName: eureka-service-internal
   template:
     metadata:
