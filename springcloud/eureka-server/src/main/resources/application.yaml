@@ -9,7 +9,7 @@ eureka:
   environment: ${ENVIRONMENT:dev}
 management:
   server:
-    port: 8081
+    port: 8082
   endpoints:
     web:
       exposure:

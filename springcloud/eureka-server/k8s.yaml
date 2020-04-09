@@ -45,21 +45,21 @@ spec:
         - name: server
           containerPort: 8761
         - name: management
-          containerPort: 8081
+          containerPort: 8082
         resources:
           requests:
             memory: 512Mi
         livenessProbe:
           httpGet:
             path: /actuator/health
-            port: 8081
+            port: 8082
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /actuator/health
-            port: 8081
+            port: 8082
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
