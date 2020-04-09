@@ -1,4 +1,5 @@
 FROM harbor.k8s.maimaiti.site/library/openjdk:8-jre-alpine
+VOLUME /tmp
 # ADD init.sh /init.sh
 COPY target/*.jar /app.jar
 #reset shell
