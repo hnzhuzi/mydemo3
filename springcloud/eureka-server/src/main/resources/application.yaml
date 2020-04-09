@@ -7,3 +7,10 @@ spring:
     active: ${ENVIRONMENT:dev}
 eureka:
   environment: ${ENVIRONMENT:dev}
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: "*"
