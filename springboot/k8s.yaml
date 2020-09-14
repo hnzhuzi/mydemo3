@@ -19,7 +19,7 @@ spec:
         # command: [ "sh", "-c", "java $(JVMSIZE) -jar /app/app.jar" --server.port=8001]
         env:
         - name: JVMSIZE
-          value: -Xms0.5g -Xmx0.5g -Djava.security.egd=file:/dev/./urandom
+          value: -Xms512m -Xmx1g -Djava.security.egd=file:/dev/./urandom
         # - name: LOGPATH
         #   value: -Dlogging.path=/logs/mmd/mall-page/
         # - name: EUREKA
