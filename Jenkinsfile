@@ -50,7 +50,7 @@ spec:
     }
 */
     environment {
-        PATH = "/app/apache-maven-3.6.1/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH"
+        PATH = "/app/apache-maven-3.6.3/bin:/app/node-v10.16.0-linux-x64/bin:/app/bin:$PATH"
         // BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
     parameters {
@@ -152,7 +152,7 @@ spec:
                 '''
             }
         }
-        stage('Deploy test local3') {
+        stage('Deploy test') {
             when {
                 expression { return "$params.Module".contains('test')}
             }
@@ -162,10 +162,10 @@ spec:
                     /*
                         echo ${InputMap["ENV"]}
                         echo ${InputMap.ENV}
-                        sleep 600000
                     */
                     sh '''
                         printenv | grep -E 'BuildTag|PATH'
+                        sleep 600000
                     '''
                 }
 
