@@ -1,9 +1,12 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jenkins-demo-springboot
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-demo-springboot
   template:
     metadata:
       labels:
@@ -11,12 +14,12 @@ spec:
     spec:
       containers:
       - name: jenkins-demo-springboot
-        image: harbor.k8s.maimaiti.site/library/jenkins-demo-springboot:<BUILD_TAG>
+        image: harbor.10.124.0.245.xip.io/library/jenkins-demo-springboot:<BUILD_TAG>
         command: [ "sh", "-c", "java $(JVMSIZE) -Dserver.port=8001 -jar /app/app.jar"]
         # command: [ "sh", "-c", "java $(JVMSIZE) -jar /app/app.jar" --server.port=8001]
         env:
         - name: JVMSIZE
-          value: -Xms3g -Xmx3g -Djava.security.egd=file:/dev/./urandom
+          value: -Xms0.5g -Xmx0.5g -Djava.security.egd=file:/dev/./urandom
         # - name: LOGPATH
         #   value: -Dlogging.path=/logs/mmd/mall-page/
         # - name: EUREKA
@@ -39,8 +42,8 @@ spec:
             path: /
             port: 8001
           initialDelaySeconds: 5
-          periodSeconds: 10          
-          
+          periodSeconds: 10
+
 ---
 
 apiVersion: v1
@@ -63,7 +66,7 @@ metadata:
   name: jenkins-demo-springboot
 spec:
   rules:
-  - host: jenkins-demo-springboot.k8s.maimaiti.site
+  - host: jenkins-demo-springboot.10.124.0.245.xip.io
     http:
       paths:
       - backend:
