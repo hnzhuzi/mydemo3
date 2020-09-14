@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: jnlp
-    image: 'harbor.k8s.maimaiti.site/library/jnlp-slave:3.27-1-myv4'
+    image: 'jenkins/jnlp-slave:3.27-1'
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
     resources:
         requests:
@@ -22,6 +22,8 @@ spec:
       mountPath: "/app"
     - name: "volume-1"
       mountPath: "/var/run/docker.sock"
+  securityContext:
+    runAsUser: 0
   volumes:
   - name: "volume-0"
     persistentVolumeClaim:
@@ -107,8 +109,8 @@ spec:
                     docker push $imageName
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-springboot
+                    kubectl --kubeconfig=/app/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/config -n kube-system rollout status deployment jenkins-demo-springboot
                 '''
             }
         }
@@ -125,8 +127,8 @@ spec:
                     docker push $imageName
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-tomcat
+                    kubectl --kubeconfig=/app/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/config -n kube-system rollout status deployment jenkins-demo-tomcat
                 '''
             }
         }
@@ -145,8 +147,8 @@ spec:
                     docker push $imageName
                     docker rmi $imageName
                     sed -i "s/<BUILD_TAG>/${BuildTag}/" k8s.yaml
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system apply -f k8s.yaml --record
-                    kubectl --kubeconfig=/app/.kube/config -n kube-system rollout status deployment jenkins-demo-vue
+                    kubectl --kubeconfig=/app/config -n kube-system apply -f k8s.yaml --record
+                    kubectl --kubeconfig=/app/config -n kube-system rollout status deployment jenkins-demo-vue
                 '''
             }
         }
