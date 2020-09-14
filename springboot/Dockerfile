@@ -14,4 +14,5 @@ RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories
 #     java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app.jar
 # java -jar -Dspring.profiles.active=prod -Dswitch=on service-api-1.0.jar
 # java -jar -Dspring.profiles.active=prod service-api-1.0.jar --switch=on
+COPY target/*.jar  /app/app.jar
 CMD ["sh", "-c", "java $JVMSIZE -jar  /app/app.jar --server.port=8001"]
