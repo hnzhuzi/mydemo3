@@ -60,7 +60,7 @@ spec:
 
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jenkins-demo-springboot
@@ -69,7 +69,10 @@ spec:
   - host: jenkins-demo-springboot.172.16.195.210.xip.io
     http:
       paths:
-      - backend:
-          serviceName: jenkins-demo-springboot
-          servicePort: 8001
-        path: /
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jenkins-demo-springboot
+            port:
+              number: 8001
