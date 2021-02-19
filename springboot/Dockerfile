@@ -1,8 +1,8 @@
 FROM openjdk:8-jre-alpine
-RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories; \
-    apk add tzdata; \
-    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
-    echo Asia/Shanghai > /etc/timezone;
+# RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories; \
+    # apk add tzdata; \
+    # ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
+    # echo Asia/Shanghai > /etc/timezone;
     # addgroup -g 1000 user01; \
     # adduser  -u 1000 -G user01 -D user01;
 # RUN apt-get update \
