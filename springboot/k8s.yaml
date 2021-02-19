@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: jenkins-demo-springboot
-        image: registry.cn-shenzhen.aliyuncs.com/hnzhuzi/jenkins-demo-springboot:<BUILD_TAG>
+        image: 172.16.195.111/library/jenkins-demo-springboot:<BUILD_TAG>
         # command: [ "sh", "-c", "java $(JVMSIZE) -Dserver.port=8001 -jar /app/app.jar"]
         # command: [ "sh", "-c", "java $(JVMSIZE) -jar /app/app.jar" --server.port=8001]
         env:

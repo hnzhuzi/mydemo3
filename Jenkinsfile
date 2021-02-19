@@ -74,7 +74,7 @@ spec:
                 // git branch: "$Branch",  credentialsId: 'gitlab', url: 'http://gitlab.k8s.maimaiti.site/root/jenkins-demo.git'
                 checkout scm
                 withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} registry.cn-shenzhen.aliyuncs.com"
+                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} 172.16.195.111"
                 }
                 script {
                     env.BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -104,7 +104,7 @@ spec:
                 sh '''
                     cd springboot/
                     mvn -Dmaven.test.skip=true clean package
-                    imageName=registry.cn-shenzhen.aliyuncs.com/hnzhuzi/jenkins-demo-springboot:${BuildTag}
+                    imageName=172.16.195.111/library/jenkins-demo-springboot:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
