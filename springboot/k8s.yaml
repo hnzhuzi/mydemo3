@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: jenkins-demo-springboot
-        image: harbor.10.124.0.245.xip.io/library/jenkins-demo-springboot:<BUILD_TAG>
+        image: registry.cn-shenzhen.aliyuncs.com/hnzhuzi/jenkins-demo-springboot:<BUILD_TAG>
         # command: [ "sh", "-c", "java $(JVMSIZE) -Dserver.port=8001 -jar /app/app.jar"]
         # command: [ "sh", "-c", "java $(JVMSIZE) -jar /app/app.jar" --server.port=8001]
         env:
@@ -66,7 +66,7 @@ metadata:
   name: jenkins-demo-springboot
 spec:
   rules:
-  - host: jenkins-demo-springboot.10.124.0.245.xip.io
+  - host: jenkins-demo-springboot.172.16.195.210.xip.io
     http:
       paths:
       - backend:

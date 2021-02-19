@@ -16,7 +16,7 @@ spec:
     resources:
         requests:
             cpu: 50m
-            memory: 1000Mi
+            memory: 100Mi
     volumeMounts:
     - name: "volume-0"
       mountPath: "/app"
@@ -74,7 +74,7 @@ spec:
                 // git branch: "$Branch",  credentialsId: 'gitlab', url: 'http://gitlab.k8s.maimaiti.site/root/jenkins-demo.git'
                 checkout scm
                 withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} harbor.10.124.0.245.xip.io"
+                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword} registry.cn-shenzhen.aliyuncs.com"
                 }
                 script {
                     env.BuildTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -104,7 +104,7 @@ spec:
                 sh '''
                     cd springboot/
                     mvn -Dmaven.test.skip=true clean package
-                    imageName=harbor.10.124.0.245.xip.io/library/jenkins-demo-springboot:${BuildTag}
+                    imageName=registry.cn-shenzhen.aliyuncs.com/hnzhuzi/jenkins-demo-springboot:${BuildTag}
                     docker build -t $imageName .
                     docker push $imageName
                     docker rmi $imageName
